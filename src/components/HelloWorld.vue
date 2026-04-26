@@ -44,30 +44,3 @@ const description =
     </div>
   </div>
 </template>
-
-<style scoped>
-.nav-link {
-  position: relative;
-  display: inline-block;
-  padding-bottom: 2px;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 2px;
-  background-color: currentColor;
-  transform: scaleX(0);
-  transform-origin: bottom right;
-  transition: transform 0.25s ease-out;
-}
-
-.nav-link:hover::after,
-.nav-link:focus-visible::after {
-  transform: scaleX(1);
-  transform-origin: bottom left;
-}
-</style>
