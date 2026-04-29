@@ -143,21 +143,30 @@ onMounted(() => {
       <div class="flex flex-col justify-between h-full">
         <div class="flex gap-6 justify-center text-gray-500 semibold mb-5">
           <button
-            class="nav-link cursor-pointer bg-transparent border-none p-0"
+            :class="[
+              'nav-link cursor-pointer bg-transparent border-none p-0',
+              { 'nav-link-active': selectedFilter === 'all' },
+            ]"
             type="button"
             @click="selectedFilter = 'all'"
           >
             All
           </button>
           <button
-            class="nav-link cursor-pointer bg-transparent border-none p-0"
+            :class="[
+              'nav-link cursor-pointer bg-transparent border-none p-0',
+              { 'nav-link-active': selectedFilter === 'offline' },
+            ]"
             type="button"
             @click="selectedFilter = 'offline'"
           >
             Offline
           </button>
           <button
-            class="nav-link cursor-pointer bg-transparent border-none p-0"
+            :class="[
+              'nav-link cursor-pointer bg-transparent border-none p-0',
+              { 'nav-link-active': selectedFilter === 'online' },
+            ]"
             type="button"
             @click="selectedFilter = 'online'"
           >
@@ -183,7 +192,7 @@ onMounted(() => {
                 />
                 <div
                   v-if="streamer.isLive"
-                  class="absolute -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-5 w-10 rounded-sm flex items-center justify-center"
+                  class="absolute -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center"
                 >
                   <span
                     class="text-xs font-semibold text-white tracking-wide select-none"
@@ -211,7 +220,7 @@ onMounted(() => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img :src="logo" alt="Icon" class="w-5" />
+            <img :src="logo" alt="Icon" class="w-4" />
           </a>
         </div>
       </div>

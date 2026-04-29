@@ -36,3 +36,12 @@ body {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
+
+.nav-link-active {
+  color: #944afa;
+}
+
+.nav-link-active::after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
