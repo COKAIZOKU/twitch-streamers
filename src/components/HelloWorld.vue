@@ -14,6 +14,7 @@ const USERNAMES = [
 ] as const;
 const API_BASE = "https://twitch-proxy.freecodecamp.rocks/twitch-api";
 const FALLBACK_AVATAR = "/avatar.png";
+const ESL_SC2_AVATAR = "/esl_sc2.jpeg";
 
 type Filter = "all" | "offline" | "online";
 
@@ -51,7 +52,6 @@ interface StreamerState {
 
 const streamers = ref<StreamerState[]>([]);
 const selectedFilter = ref<Filter>("all");
-const loading = ref<boolean>(true);
 const errorMessage = ref<string>("");
 
 const filteredStreamers = computed<StreamerState[]>(() => {
@@ -84,6 +84,28 @@ const onAvatarError = (event: Event): void => {
   image.src = FALLBACK_AVATAR;
 };
 
+const getAvatar = (username: string, logo?: string | null): string => {
+  const normalizedUsername = username.toLowerCase();
+
+  if (normalizedUsername === "esl_sc2") {
+    return ESL_SC2_AVATAR;
+  }
+
+  if (normalizedUsername === "storbeck") {
+    return FALLBACK_AVATAR;
+  }
+
+  return logo || FALLBACK_AVATAR;
+};
+
+const preloadImage = async (src: string): Promise<void> =>
+  new Promise((resolve) => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = src;
+  });
+
 const fetchStreamer = async (username: string): Promise<StreamerState> => {
   const [channelRes, streamRes] = await Promise.all([
     fetch(`${API_BASE}/channels/${username}`),
@@ -97,7 +119,7 @@ const fetchStreamer = async (username: string): Promise<StreamerState> => {
     return {
       username,
       name: username,
-      avatar: "/avatar.png",
+      avatar: getAvatar(username),
       isLive: false,
       game: "",
       title: channel.message || "Streamer not found",
@@ -107,7 +129,7 @@ const fetchStreamer = async (username: string): Promise<StreamerState> => {
   return {
     username,
     name: channel.display_name || channel.name || username,
-    avatar: channel.logo || "/avatar.png",
+    avatar: getAvatar(username, channel.logo),
     isLive: Boolean(stream.stream || stream.data?.[0]),
     game:
       stream.stream?.game || stream.data?.[0]?.game_name || channel.game || "",
@@ -121,14 +143,16 @@ const fetchStreamer = async (username: string): Promise<StreamerState> => {
 
 const loadStreamers = async (): Promise<void> => {
   try {
-    streamers.value = await Promise.all(
+    const loadedStreamers = await Promise.all(
       USERNAMES.map((username) => fetchStreamer(username)),
     );
+    await Promise.all(
+      loadedStreamers.map((streamer) => preloadImage(streamer.avatar)),
+    );
+    streamers.value = loadedStreamers;
   } catch (error: unknown) {
     errorMessage.value =
       error instanceof Error ? error.message : "Failed to load streamers";
-  } finally {
-    loading.value = false;
   }
 };
 
@@ -175,8 +199,7 @@ onMounted(() => {
         </div>
         <div class="flex h-full justify-start overflow-auto">
           <div class="flex h-fit w-full flex-col gap-5">
-            <p v-if="loading" class="text-sm text-gray-400">Loading...</p>
-            <p v-else-if="errorMessage" class="text-sm text-red-500">
+            <p v-if="errorMessage" class="text-sm text-red-500">
               {{ errorMessage }}
             </p>
             <div
@@ -220,7 +243,7 @@ onMounted(() => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img :src="logo" alt="Icon" class="w-4" />
+            <img :src="logo" alt="Icon" class="w-4.5" />
           </a>
         </div>
       </div>
