@@ -15,6 +15,16 @@ const USERNAMES = [
 const API_BASE = "https://twitch-proxy.freecodecamp.rocks/twitch-api";
 const FALLBACK_AVATAR = "/avatar.png";
 const ESL_SC2_AVATAR = "/esl_sc2.jpeg";
+const BACKGROUND_LINES = [
+  "Streamers News Art Music Games Chatting IRL Live Stories Food",
+  "Live Stories IRL Chatting Streamers Games Music Art News Food",
+  "Food News Art Music Games Streamers Chatting IRL Live Stories",
+  "Games Music Art Food News Live Stories IRL Chatting Streamers",
+  "IRL Live Stories Streamers Chatting Food Games Music Art News",
+  "News Food Art Music Games Chatting Streamers IRL Live Stories",
+  "Chatting Streamers IRL Live Stories Games News Food Art Music",
+  "Music Games Live Stories Art Food IRL Chatting Streamers News",
+];
 
 type Filter = "all" | "offline" | "online";
 
@@ -162,8 +172,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex bg-purple-twitch min-h-screen w-screen">
-    <div class="bg-white mx-auto mt-60 h-180 w-150 p-12">
+  <div class="relative isolate flex min-h-screen w-screen overflow-hidden bg-purple-twitch">
+    <div class="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
+      <div class="flex h-full flex-col justify-between py-2">
+        <p
+          v-for="(line, index) in BACKGROUND_LINES"
+          :key="index"
+          class="-ml-30 -mt-10 whitespace-nowrap leading-none text-[8rem] font-semibold text-black/12"
+        >
+          {{ line }}
+        </p>
+      </div>
+    </div>
+    <div class="relative z-20 bg-white mx-auto mt-60 h-180 w-150 p-12">
       <div class="flex flex-col justify-between h-full">
         <div class="flex gap-6 justify-center text-gray-500 semibold mb-5">
           <button
