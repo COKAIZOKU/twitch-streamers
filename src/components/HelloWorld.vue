@@ -13,18 +13,29 @@
         "noobs2ninjas"
     ]as const;
     const API_BASE = "https://twitch-proxy.freecodecamp.rocks/twitch-api";
-    const FALLBACK_AVATAR = "/avatar.png";
     const ESL_SC2_AVATAR = "/esl_sc2.jpeg";
+    const STORBECK_AVATAR = "/storbeck.png";
     const BACKGROUND_LINES = [
-        "Streamers News Art Music Games Chatting IRL Live Stories Food",
-        "Live Stories Streamers IRL Chatting Games Music Art News Food",
-        "Food News Art Music Games Streamers Chatting IRL Live Stories",
-        "Games Music Art Food News Live Stories IRL Chatting Streamers",
-        "IRL Live Stories Streamers Chatting Food Games Music Art News",
-        "News Food Art Music Games Chatting Streamers IRL Live Stories",
-        "Chatting Streamers IRL Live Stories Games News Food Art Music",
-        "Music Games Live Stories Art Food IRL Chatting Streamers News"
-    ];
+        "Streamers News Art Music Games Chatting IRL Live Stories Food Crafting Chess Sports",
+        "Chess Sports Games Chatting IRL Live Streamers News Art Music Food Stories Crafting",
+        "Music Streamers Chatting News Games Art Food IRL Live Crafting Stories Sports Chess",
+        "News Art Streamers Games Chatting Music Live IRL Stories Food Sports Chess Crafting",
+        "Games Chatting News Streamers Music Art Live Stories IRL Chess Food Sports Crafting",
+        "Art Music Games Streamers News Chatting IRL Food Live Sports Stories Crafting Chess",
+        "Chatting IRL Live Streamers Games News Music Art Stories Chess Food Crafting Sports",
+        "Food Stories Crafting Chess Sports Streamers News Art Music Games Chatting IRL Live",
+        "Live IRL Chatting Games Music News Art Streamers Sports Chess Crafting Food Stories",
+        "Stories Food Streamers Art News Music Games Live IRL Chatting Crafting Chess Sports",
+        "Streamers News Art Music Games Chatting IRL Live Stories Food Crafting Chess Sports",
+        "Chess Sports Games Chatting IRL Live Streamers News Art Music Food Stories Crafting",
+        "Music Streamers Chatting News Games Art Food IRL Live Crafting Stories Sports Chess",
+        "News Art Streamers Games Chatting Music Live IRL Stories Food Sports Chess Crafting",
+        "Games Chatting News Streamers Music Art Live Stories IRL Chess Food Sports Crafting",
+        "Art Music Games Streamers News Chatting IRL Food Live Sports Stories Crafting Chess",
+        "Chatting IRL Live Streamers Games News Music Art Stories Chess Food Crafting Sports",
+        "Food Stories Crafting Chess Sports Streamers News Art Music Games Chatting IRL Live",
+        "Live IRL Chatting Games Music News Art Streamers Sports Chess Crafting Food Stories",
+        "Stories Food Streamers Art News Music Games Live IRL Chatting Crafting Chess Sports",     ];
     const HIGHLIGHT_LINE_INDEX = 1;
     const HIGHLIGHT_WORD = "Streamers";
 
@@ -80,7 +91,7 @@
         return streamers.value;
     });
 
-    const truncateChars = (value : string, max = 60) : string => value.length > max
+    const truncateChars = (value : string, max = 70) : string => value.length > max
         ? `${value.slice(0, max)}...`
         : value;
 
@@ -91,14 +102,6 @@
         return truncateChars(`${streamer.game || "Unknown"} : ${streamer.title || "Live now"}`,);
     };
 
-    const onAvatarError = (event : Event) : void => {
-        const image = event.currentTarget as HTMLImageElement | null;
-        if (!image || image.src.endsWith(FALLBACK_AVATAR)) {
-            return;
-        }
-        image.src = FALLBACK_AVATAR;
-    };
-
     const getAvatar = (username : string, logo?: string | null) : string => {
         const normalizedUsername = username.toLowerCase();
 
@@ -107,10 +110,10 @@
         }
 
         if (normalizedUsername === "storbeck") {
-            return FALLBACK_AVATAR;
+            return STORBECK_AVATAR;
         }
 
-        return logo || FALLBACK_AVATAR;
+        return logo || "";
     };
 
     const preloadImage = async(src : string) : Promise < void > => new Promise((resolve) => {
@@ -196,11 +199,11 @@
         <div
             class="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
             <div
-                class="absolute ml-[-175px] left-[50%] top-[-3%] flex h-full w-[1800px] -translate-x-[50%] flex-col justify-between py-2">
+                class="absolute ml-[-26rem] sm:ml-[-111rem] left-[50%] top-[-2%] flex h-full w-[1880px] -translate-x-[50%] flex-col justify-between">
                 <p
                     v-for="(line, index) in BACKGROUND_LINES"
                     :key="index"
-                    class="whitespace-nowrap text-center leading-none text-[8rem] font-semibold text-black/12">
+                    class="whitespace-nowrap text-center leading-none text-[4rem] sm:text-[8rem] font-semibold text-[#8040DA]">
                     <template v-if="index === HIGHLIGHT_LINE_INDEX">
                         {{ splitHighlightedLine(line).before }}<span class="text-white">{{ HIGHLIGHT_WORD }}</span>{{ splitHighlightedLine(line).after }}
                     </template>
@@ -210,7 +213,7 @@
                 </p>
             </div>
         </div>
-        <div class="relative z-20 bg-white mx-auto mt-60 h-180 w-150 p-12">
+        <div class="relative z-20 bg-white mx-auto mt-40 sm:mt-60 h-180 w-160 py-10 px-5 sm:p-12">
             <div class="flex flex-col justify-between h-full">
                 <div class="flex gap-6 justify-center text-gray-500 semibold mb-5">
                     <button
@@ -253,8 +256,7 @@
                             <div class="relative w-12 h-12 shrink-0">
                                 <img
                                     :src="streamer.avatar"
-                                    class="w-full h-full rounded-full object-cover shrink-0"
-                                    @error="onAvatarError"/>
+                                    class="w-full h-full rounded-full object-cover shrink-0"/>
                                 <div
                                     v-if="streamer.isLive"
                                     class="absolute -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center">
