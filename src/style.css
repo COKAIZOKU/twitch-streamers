@@ -50,3 +50,16 @@ html {
   scrollbar-gutter: stable;
 }
 
+.logo .eye {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+.logo:hover .eye {
+  animation: blink 120ms ease-in-out 4 alternate;
+}
+
+@keyframes blink {
+  from { transform: translateY(0) scaleY(1); }   
+  to   { transform: scaleY(0.5); }
+}
