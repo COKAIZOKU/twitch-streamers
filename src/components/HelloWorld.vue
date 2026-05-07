@@ -34,7 +34,8 @@
         "Chatting IRL Live Streamers Games News Music Art Stories Chess Food Crafting Sports",
         "Food Stories Crafting Chess Sports Streamers News Art Music Games Chatting IRL Live",
         "Live IRL Chatting Games Music News Art Streamers Sports Chess Crafting Food Stories",
-        "Stories Food Streamers Art News Music Games Live IRL Chatting Crafting Chess Sports",     ];
+        "Stories Food Streamers Art News Music Games Live IRL Chatting Crafting Chess Sports"
+    ];
     const HIGHLIGHT_LINE_INDEX = 1;
     const HIGHLIGHT_WORD = "Streamers";
 
@@ -90,15 +91,11 @@
         return streamers.value;
     });
 
-    const truncateChars = (value : string, max = 70) : string => value.length > max
-        ? `${value.slice(0, max)}...`
-        : value;
-
     const subtitle = (streamer : StreamerState) : string => {
         if (!streamer.isLive) {
             return "Offline";
         }
-        return truncateChars(`${streamer.game || "Unknown"} : ${streamer.title || "Live now"}`,);
+        return `${streamer.game || "Unknown"} : ${streamer.title || "Live now"}`;
     };
 
     const getAvatar = (username : string, logo?: string | null) : string => {
@@ -177,7 +174,10 @@
         void loadStreamers();
     });
 
-    const splitHighlightedLine = (line: string): {before: string; after: string} => {
+    const splitHighlightedLine = (line : string) : {
+        before: string;
+        after: string
+    } => {
         const highlightStart = line.indexOf(HIGHLIGHT_WORD);
 
         if (highlightStart === -1) {
@@ -204,7 +204,8 @@
                     :key="index"
                     class="whitespace-nowrap text-center leading-none text-[4rem] sm:text-[8rem] font-semibold text-[#8040DA]">
                     <template v-if="index === HIGHLIGHT_LINE_INDEX">
-                        {{ splitHighlightedLine(line).before }}<span class="text-white">{{ HIGHLIGHT_WORD }}</span>{{ splitHighlightedLine(line).after }}
+                        {{ splitHighlightedLine(line).before }}
+                        <span class="text-white">{{ HIGHLIGHT_WORD }}</span>{{ splitHighlightedLine(line).after }}
                     </template>
                     <template v-else>
                         {{ line }}
@@ -212,7 +213,8 @@
                 </p>
             </div>
         </div>
-        <div class="relative z-20 bg-white mx-auto mt-40 sm:mt-60 h-180 w-160 py-10 px-5 sm:p-12">
+        <div
+            class="relative z-20 bg-white mx-auto mt-40 sm:mt-60 h-180 w-160 py-10 px-5 sm:p-12">
             <div class="flex flex-col justify-between h-full">
                 <div class="flex gap-6 justify-center text-gray-500 semibold mb-5">
                     <button
@@ -258,7 +260,7 @@
                                     class="w-full h-full rounded-full object-cover shrink-0"/>
                                 <div
                                     v-if="streamer.isLive"
-                                    class="absolute -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center">
+                                    class="absolute ping -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center">
                                     <span class="text-xs font-semibold text-white tracking-wide select-none">LIVE</span >
                                 </div>
                             </div>
@@ -270,18 +272,26 @@
                                     class="text-md text-black hover:underline">
                                     {{ streamer.name }}
                                 </a>
-                                <p class="text-sm text-gray-400">{{ subtitle(streamer) }}</p>
+                                <p class="text-sm text-gray-400 truncate max-w-[240px] sm:max-w-[450px]">{{ subtitle(streamer) }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="flex justify-center">
                     <a href="https://twitch.tv/" target="_blank" rel="noopener noreferrer">
-                        <svg class="logo w-4.5" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2400 2800">
+                        <svg
+                            class="logo w-5"
+                            version="1.1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 2400 2800">
                             <g>
-                                <polygon fill="#FFFFFF" points="2200,1300 1800,1700 1400,1700 1050,2050 1050,1700 600,1700 600,200 2200,200"/>
+                                <polygon
+                                    fill="#FFFFFF"
+                                    points="2200,1300 1800,1700 1400,1700 1050,2050 1050,1700 600,1700 600,200 2200,200"/>
                                 <g>
-                                    <path fill="#9146FF" d="M500,0L0,500v1800h600v500l500-500h400l900-900V0H500z M2200,1300l-400,400h-400l-350,350v-350H600V200h1600V1300z"/>
+                                    <path
+                                        fill="#9146FF"
+                                        d="M500,0L0,500v1800h600v500l500-500h400l900-900V0H500z M2200,1300l-400,400h-400l-350,350v-350H600V200h1600V1300z"/>
                                     <rect x="1700" y="550" class="eye" fill="#9146FF" width="200" height="600"/>
                                     <rect x="1150" y="550" class="eye" fill="#9146FF" width="200" height="600"/>
                                 </g>
