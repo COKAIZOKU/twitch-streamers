@@ -5,10 +5,15 @@ body {
   font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 .bg-purple-twitch {
   background-color: #944afa;
 }
 
+/* Underline Hover Effect */
 /* https://dev.to/lensco825/a-smooth-underline-hover-effect-to-use-16bf */
 
 .nav-link {
@@ -46,9 +51,7 @@ body {
   transform-origin: bottom left;
 }
 
-html {
-  scrollbar-gutter: stable;
-}
+/* Twitch Logo Blink Animation */
 
 .logo .eye {
   transform-box: fill-box;
