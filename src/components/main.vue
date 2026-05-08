@@ -42,6 +42,7 @@
     const streamers = ref < StreamerState[] > ([]);
     const selectedFilter = ref < Filter > ("all");
     const errorMessage = ref < string > ("");
+    const isLoading = computed < boolean > (() => streamers.value.length === 0 && !errorMessage.value);
 
     const filteredStreamers = computed < StreamerState[] > (() => {
         if (selectedFilter.value === "online") {
@@ -151,31 +152,45 @@
                         <p v-if="errorMessage" class="text-sm text-red-500">
                             {{ errorMessage }}
                         </p>
-                        <div
-                            v-for="streamer in filteredStreamers"
-                            :key="streamer.username"
-                            class="flex h-fit gap-6">
-                            <div class="relative w-12 h-12 shrink-0">
-                                <img
-                                    :src="streamer.avatar"
-                                    class="w-full h-full rounded-full object-cover shrink-0"/>
-                                <div
-                                    v-if="streamer.isLive"
-                                    class="absolute ping -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center">
-                                    <span class="text-xs font-semibold text-white tracking-wide select-none">LIVE</span >
+                        <template v-if="isLoading">
+                            <div
+                                v-for="index in 8"
+                                :key="`skeleton-${index}`"
+                                class="flex h-fit gap-6">
+                                <div class="h-12 w-12 shrink-0 rounded-full bg-gray-200 animate-pulse"></div>
+                                <div class="flex flex-col justify-center">
+                                    <div class="h-4 w-28 rounded bg-gray-200 animate-pulse"></div>
+                                    <div class="mt-2 h-3 w-44 rounded bg-gray-200 animate-pulse sm:w-64"></div>
                                 </div>
                             </div>
-                            <div class="flex flex-col justify-center">
-                                <a
-                                    :href="`https://twitch.tv/${streamer.username}`"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="text-md text-black hover:underline">
-                                    {{ streamer.name }}
-                                </a>
-                                <p class="text-sm text-gray-400 truncate max-w-[240px] sm:max-w-[450px]">{{ subtitle(streamer) }}</p>
+                        </template>
+                        <template v-else>
+                            <div
+                                v-for="streamer in filteredStreamers"
+                                :key="streamer.username"
+                                class="flex h-fit gap-6">
+                                <div class="relative w-12 h-12 shrink-0">
+                                    <img
+                                        :src="streamer.avatar"
+                                        class="w-full h-full rounded-full object-cover shrink-0"/>
+                                    <div
+                                        v-if="streamer.isLive"
+                                        class="absolute ping -bottom-1 left-1/2 -translate-x-1/2 z-5 bg-red-500 h-4.5 w-9.5 rounded-sm flex items-center justify-center">
+                                        <span class="text-xs font-semibold text-white tracking-wide select-none">LIVE</span >
+                                    </div>
+                                </div>
+                                <div class="flex flex-col justify-center">
+                                    <a
+                                        :href="`https://twitch.tv/${streamer.username}`"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="text-md text-black hover:underline">
+                                        {{ streamer.name }}
+                                    </a>
+                                    <p class="text-sm text-gray-400 truncate max-w-[240px] sm:max-w-[450px]">{{ subtitle(streamer) }}</p>
+                                </div>
                             </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
                 <div class="flex justify-center">
