@@ -27,7 +27,7 @@
     ];
     const HIGHLIGHT_LINE_INDEX = 1;
     const HIGHLIGHT_WORD = "Streamers";
-    
+
     type Filter = "all" | "offline" | "online";
 
     interface StreamerState {
@@ -96,7 +96,7 @@
 <template>
     <div
         class="relative isolate flex min-h-screen w-screen overflow-hidden bg-purple-twitch">
-        <api @loaded="handleStreamersLoaded" @error="handleApiError" />
+        <api @loaded="handleStreamersLoaded" @error="handleApiError"/>
         <div
             class="pointer-events-none absolute inset-0 z-0 select-none overflow-hidden">
             <div
@@ -153,10 +153,7 @@
                             {{ errorMessage }}
                         </p>
                         <template v-if="isLoading">
-                            <div
-                                v-for="index in 8"
-                                :key="`skeleton-${index}`"
-                                class="flex h-fit gap-6">
+                            <div v-for="index in 8" :key="`skeleton-${index}`" class="flex h-fit gap-6">
                                 <div class="h-12 w-12 shrink-0 rounded-full bg-gray-200 animate-pulse"></div>
                                 <div class="flex flex-col justify-center">
                                     <div class="h-4 w-28 rounded bg-gray-200 animate-pulse"></div>
@@ -172,6 +169,7 @@
                                 <div class="relative w-12 h-12 shrink-0">
                                     <img
                                         :src="streamer.avatar"
+                                        alt="avatar"
                                         class="w-full h-full rounded-full object-cover shrink-0"/>
                                     <div
                                         v-if="streamer.isLive"
@@ -195,7 +193,7 @@
                 </div>
                 <div class="flex justify-center">
                     <a href="https://twitch.tv/" target="_blank" rel="noopener noreferrer">
-                        <logo />
+                        <logo/>
                     </a>
                 </div>
             </div>
