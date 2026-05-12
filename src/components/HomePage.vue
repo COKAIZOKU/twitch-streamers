@@ -1,7 +1,7 @@
 <script setup lang="ts">
     import {computed, ref} from "vue";
-    import api from "./api.vue";
-    import logo from "./logo.vue";
+    import api from "./ApiClient.vue";
+    import logo from "./GlitchLogo.vue";
 
     const BACKGROUND_LINES = [
         "Streamers News Art Music Games Chatting IRL Live Stories Food Crafting Chess Sports",

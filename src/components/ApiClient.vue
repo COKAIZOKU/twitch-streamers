@@ -129,4 +129,6 @@
     });
 </script>
 
-<template></template>
+<template>
+    <div class="hidden" />
+</template>
